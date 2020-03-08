@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import dev.berlitz.carname.fragment.MyCarsFragment;
@@ -13,7 +14,10 @@ import dev.berlitz.carname.fragment.NewCarFragment;
 public class MainActivity extends AppCompatActivity  {
 
     private Button newCarButton, myCarsButton;
-    private Integer currentPage = 1;
+
+    private MyCarsFragment myCarsFragment = new MyCarsFragment();
+    private NewCarFragment newCarFragment = new NewCarFragment();
+    private Fragment active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,9 @@ public class MainActivity extends AppCompatActivity  {
         myCarsButton = findViewById(R.id.myCarsButton);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameIn, new NewCarFragment());
+        active = newCarFragment;
+        transaction.add(R.id.frameIn, myCarsFragment).add(R.id.frameIn, newCarFragment);
+        transaction.hide(myCarsFragment).show(newCarFragment);
         transaction.commit();
         createListeners();
     }
@@ -34,10 +40,9 @@ public class MainActivity extends AppCompatActivity  {
         myCarsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (0 == currentPage) return;
-                currentPage = 0;
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frameIn, new MyCarsFragment());
+                transaction.show(myCarsFragment).hide(active);
+                active = myCarsFragment;
                 transaction.commit();
             }
         });
@@ -45,10 +50,9 @@ public class MainActivity extends AppCompatActivity  {
         newCarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (1 == currentPage) return;
-                currentPage = 1;
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frameIn, new NewCarFragment());
+                transaction.show(newCarFragment).hide(active);
+                active = newCarFragment;
                 transaction.commit();
             }
         });

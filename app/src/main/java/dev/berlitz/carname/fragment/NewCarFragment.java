@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
     private static final int REQUEST_PICK_IMAGE = 2;
     private static final String DATA_IMAGE_JPEG_BASE_64 = "data:image/jpeg;base64,";
     private ProgressBar progressBar;
+    private LinearLayout newCarLayout;
     private String currentPhotoPath;
 
     private Bitmap currentImage;
@@ -56,7 +58,8 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_car, container, false);
 
-        progressBar = new ProgressBar(getActivity().getApplicationContext());//view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.progressBar);
+        newCarLayout = view.findViewById(R.id.newCarLayout);
         camera = view.findViewById(R.id.camera);
         gallery = view.findViewById(R.id.gallery);
 
@@ -208,6 +211,7 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
     @Override
     public void handlePostExecute(CarResponse[] carResponse) {
         progressBar.setVisibility(View.INVISIBLE);
+        newCarLayout.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         carViewFragment = new CarViewFragment(carResponse[0], currentImage);
         fragmentTransaction.replace(R.id.frameIn, carViewFragment);
@@ -217,9 +221,7 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
     @Override
     public void handlePreExecute() {
         progressBar.setVisibility(View.VISIBLE);
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.remove(carViewFragment);
-        fragmentTransaction.commit();
+        newCarLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override
