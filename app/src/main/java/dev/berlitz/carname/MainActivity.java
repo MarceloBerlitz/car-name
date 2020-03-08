@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity  {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         active = newCarFragment;
         transaction.add(R.id.frameIn, myCarsFragment).add(R.id.frameIn, newCarFragment);
+        transaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.hide(myCarsFragment).show(newCarFragment);
         transaction.commit();
         createListeners();
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity  {
         myCarsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (myCarsFragment == active) return;
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.show(myCarsFragment).hide(active);
                 active = myCarsFragment;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity  {
         newCarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (newCarFragment == active) return;
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.show(newCarFragment).hide(active);
                 active = newCarFragment;
