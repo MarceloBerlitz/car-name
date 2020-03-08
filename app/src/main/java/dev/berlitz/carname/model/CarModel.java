@@ -1,11 +1,15 @@
 package dev.berlitz.carname.model;
 
-public class CarModel {
+import java.io.Serializable;
+
+public class CarModel implements Serializable {
     private int uid;
     private String model;
     private String make;
     private String model_year;
     private String body_style;
+    private String confidence;
+    private String picture;
 
     public int getUid() {
         return uid;
@@ -63,6 +67,4 @@ public class CarModel {
         this.picture = picture;
     }
 
-    private String confidence;
-    private String picture;
 }
