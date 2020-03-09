@@ -38,13 +38,7 @@ public class CarMakeAndModel extends AsyncTask<String, Void, CarResponse[]> {
                 throw new Exception(result.asJsonString());
             }
         } catch (Exception e) {
-            final Exception exception = e;
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    asyncTaskHandler.handleError(exception);
-                }
-            });
+            asyncTaskHandler.handleError(e);
             this.cancel(true);
         }
         return null;

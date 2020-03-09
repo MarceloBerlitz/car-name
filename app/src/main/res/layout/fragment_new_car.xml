@@ -26,6 +26,14 @@
 
             </FrameLayout>
 
+            <Button
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="save"
+                android:textColor="@android:color/white" />
+
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
@@ -37,10 +45,8 @@
                     android:id="@+id/camera"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@color/darkGrey"
+                    android:backgroundTint="@color/darkGrey"
                     android:foreground="@drawable/ic_photo_camera_black_24dp"
                     android:foregroundGravity="center"
                     android:textColor="@android:color/white" />
@@ -49,10 +55,8 @@
                     android:id="@+id/gallery"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@color/darkGrey"
+                    android:backgroundTint="@color/darkGrey"
                     android:foreground="@drawable/ic_photo_library_black_24dp"
                     android:foregroundGravity="center"
                     android:textColor="@android:color/white" />
@@ -62,8 +66,8 @@
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

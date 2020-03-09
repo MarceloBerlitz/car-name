@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.room.Room;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,8 +36,11 @@ import java.util.Date;
 import dev.berlitz.carname.AsyncTaskHandler;
 import dev.berlitz.carname.R;
 import dev.berlitz.carname.converters.PathConverter;
+import dev.berlitz.carname.database.AppDatabase;
 import dev.berlitz.carname.integration.response.CarMakeAndModel;
 import dev.berlitz.carname.integration.response.CarResponse;
+import dev.berlitz.carname.mapper.CarMapper;
+import dev.berlitz.carname.model.CarModel;
 
 public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, CarResponse[]> {
 
@@ -48,8 +52,9 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
     private String currentPhotoPath;
 
     private Bitmap currentImage;
+    private CarModel currentCar;
 
-    private Button camera, gallery;
+    private Button camera, gallery, save;
 
     private CarViewFragment carViewFragment;
 
@@ -62,6 +67,7 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
         newCarLayout = view.findViewById(R.id.newCarLayout);
         camera = view.findViewById(R.id.camera);
         gallery = view.findViewById(R.id.gallery);
+        save = view.findViewById(R.id.save);
 
         addEventListeners();
 
@@ -94,6 +100,35 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
                     requestStoragePermission();
                     onClick(v);
                 }
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentCar == null) { toast("No car to save."); return; };
+
+                Thread temp = new Thread() {
+                    @Override
+                    public void run() {
+                        AppDatabase db = Room.databaseBuilder(getActivity().getApplicationContext(),
+                                AppDatabase.class, "my-database").build();
+                        try {
+                            db.carDao().insert(CarMapper.mapFrom(currentCar));
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    save.setText("saved");
+                                    save.setEnabled(false);
+                                }
+                            });
+                        } catch (Exception e) {
+                            toast(e.getMessage());
+                        }
+                    }
+                };
+
+                temp.start();
             }
         });
     }
@@ -148,24 +183,27 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
                     handleImage(PathConverter.convertMediaUriToPath(getActivity().getApplicationContext(), data.getData()));
                     break;
             }
-        } else {
-            toast("onActivityResult: N deu :T");
         }
     }
 
 
     private void handleImage(String path) {
+        currentPhotoPath = path; //important to save picture;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+
+//        if (deletePicture) {
+//            if (!new File(path).delete()) {
+//                toast("Erro ao excluir foto.");
+//            }
+//        }
+
         if (bitmap != null) {
             currentImage = bitmap;
 //            imageView.setImageBitmap(bitmap);
             CarMakeAndModel carMakeAndModel = new CarMakeAndModel(this);
             carMakeAndModel.execute(DATA_IMAGE_JPEG_BASE_64 + getImageBase64(bitmap));
-//            if (!new File(path).delete()) {
-//                toast("Erro ao excluir foto."); //Necessário validar se é da câmera
-//            }
         } else {
             toast("Erro ao recuperar foto");
         }
@@ -210,12 +248,24 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
 
     @Override
     public void handlePostExecute(CarResponse[] carResponse) {
+        CarResponse car = carResponse[0];
+        currentCar = new CarModel();
+        currentCar.setBody_style(car.getBody_style());
+        currentCar.setConfidence(car.getConfidence());
+        currentCar.setMake(car.getMake());
+        currentCar.setModel(car.getModel());
+        currentCar.setModel_year(car.getModel_year());
+        currentCar.setPicture(currentPhotoPath);
+
         progressBar.setVisibility(View.INVISIBLE);
         newCarLayout.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        carViewFragment = new CarViewFragment(carResponse[0], currentImage);
+        carViewFragment = new CarViewFragment(car, currentImage);
         fragmentTransaction.replace(R.id.frameIn, carViewFragment);
         fragmentTransaction.commit();
+
+        save.setEnabled(true);
+        save.setText("save");
     }
 
     @Override
@@ -226,7 +276,14 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
 
     @Override
     public void handleError(Exception ex) {
-        progressBar.setVisibility(View.INVISIBLE);
-        Toast.makeText(getActivity().getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        final Exception exception = ex;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.INVISIBLE);
+                newCarLayout.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity().getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

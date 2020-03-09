@@ -8,14 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import dev.berlitz.carname.fragment.MyCarsFragment;
+import dev.berlitz.carname.fragment.mycars.MyCarsFragment;
 import dev.berlitz.carname.fragment.NewCarFragment;
 
 public class MainActivity extends AppCompatActivity  {
 
     private Button newCarButton, myCarsButton;
 
-    private MyCarsFragment myCarsFragment = new MyCarsFragment();
+    private MyCarsFragment myCarsFragment;
     private NewCarFragment newCarFragment = new NewCarFragment();
     private Fragment active;
 
@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity  {
         myCarsButton = findViewById(R.id.myCarsButton);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        active = newCarFragment;
-        transaction.add(R.id.frameIn, myCarsFragment).add(R.id.frameIn, newCarFragment);
-        transaction.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.hide(myCarsFragment).show(newCarFragment);
+        transaction.add(R.id.frameIn, newCarFragment);
         transaction.commit();
+        active = newCarFragment;
+
+        newCarButton.setBackgroundColor(getColor(R.color.colorPrimary2));
         createListeners();
     }
 
@@ -43,9 +43,14 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if (myCarsFragment == active) return;
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.show(myCarsFragment).hide(active);
-                active = myCarsFragment;
+                myCarsFragment = new MyCarsFragment();
+                transaction.add(R.id.frameIn, myCarsFragment);
+                transaction.hide(active);
                 transaction.commit();
+                active = myCarsFragment;
+
+                myCarsButton.setBackgroundColor(getColor(R.color.colorPrimary2));
+                newCarButton.setBackgroundColor(getColor(R.color.colorPrimary));
             }
         });
 
@@ -54,9 +59,13 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if (newCarFragment == active) return;
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.show(newCarFragment).hide(active);
-                active = newCarFragment;
+                transaction.remove(myCarsFragment).show(newCarFragment);
                 transaction.commit();
+
+                active = newCarFragment;
+
+                newCarButton.setBackgroundColor(getColor(R.color.colorPrimary2));
+                myCarsButton.setBackgroundColor(getColor(R.color.colorPrimary));
             }
         });
     }
