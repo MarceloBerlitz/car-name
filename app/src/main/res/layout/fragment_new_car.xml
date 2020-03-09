@@ -6,6 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ScrollView android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,7 +23,6 @@
                 android:id="@+id/frameIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:elevation="0dp"
                 android:visibility="visible">
 
@@ -38,7 +40,6 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -75,4 +76,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </FrameLayout>
