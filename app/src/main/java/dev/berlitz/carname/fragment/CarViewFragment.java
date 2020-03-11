@@ -15,6 +15,8 @@ import java.text.DecimalFormat;
 import dev.berlitz.carname.R;
 import dev.berlitz.carname.integration.response.CarResponse;
 
+import static dev.berlitz.carname.shared.PercentageUtil.formatPercent;
+
 public class CarViewFragment extends Fragment {
 
     private ImageView imageView;
@@ -57,13 +59,5 @@ public class CarViewFragment extends Fragment {
         }
 
         return view;
-    }
-
-    public static String formatPercent(double done, int digits) {
-        DecimalFormat percentFormat = new DecimalFormat("0.0%");
-        percentFormat.setDecimalSeparatorAlwaysShown(false);
-        percentFormat.setMinimumFractionDigits(digits);
-        percentFormat.setMaximumFractionDigits(digits);
-        return percentFormat.format(done);
     }
 }

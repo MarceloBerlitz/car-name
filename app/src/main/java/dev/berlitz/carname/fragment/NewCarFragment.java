@@ -42,6 +42,8 @@ import dev.berlitz.carname.integration.response.CarResponse;
 import dev.berlitz.carname.mapper.CarMapper;
 import dev.berlitz.carname.model.CarModel;
 
+import static dev.berlitz.carname.shared.PercentageUtil.formatPercent;
+
 public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, CarResponse[]> {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -251,7 +253,7 @@ public class NewCarFragment extends Fragment implements AsyncTaskHandler<Void, C
         CarResponse car = carResponse[0];
         currentCar = new CarModel();
         currentCar.setBody_style(car.getBody_style());
-        currentCar.setConfidence(car.getConfidence());
+        currentCar.setConfidence(formatPercent(Double.valueOf(car.getConfidence()), 0));
         currentCar.setMake(car.getMake());
         currentCar.setModel(car.getModel());
         currentCar.setModel_year(car.getModel_year());

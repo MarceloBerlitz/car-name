@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/darkGrey"
+        android:backgroundTint="@android:color/white"
         app:cardElevation="4dp">
 
         <LinearLayout
@@ -90,17 +90,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:text="Volkswagen"
                         android:textAlignment="textStart"
-                        android:textSize="18sp"
-                        tools:text="Volkswagen" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/model"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:text="Golf"
                         android:textAlignment="textStart"
                         android:textSize="18sp" />
 
@@ -109,7 +106,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:text="2020"
                         android:textAlignment="textStart"
                         android:textSize="18sp" />
 
@@ -118,7 +114,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
-                        android:text="100%"
                         android:textAlignment="textStart"
                         android:textSize="18sp" />
 

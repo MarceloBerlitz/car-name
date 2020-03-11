@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity  {
         transaction.commit();
         active = newCarFragment;
 
-        newCarButton.setBackgroundColor(getColor(R.color.colorPrimary2));
+        newCarButton.setBackgroundColor(getColor(R.color.colorSecondary));
         createListeners();
     }
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity  {
                 transaction.add(R.id.frameIn, myCarsFragment).hide(active).commit();
                 active = myCarsFragment;
 
-                myCarsButton.setBackgroundColor(getColor(R.color.colorPrimary2));
+                myCarsButton.setBackgroundColor(getColor(R.color.colorSecondary));
                 newCarButton.setBackgroundColor(getColor(R.color.colorPrimary));
             }
         });
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
 
                 active = newCarFragment;
 
-                newCarButton.setBackgroundColor(getColor(R.color.colorPrimary2));
+                newCarButton.setBackgroundColor(getColor(R.color.colorSecondary));
                 myCarsButton.setBackgroundColor(getColor(R.color.colorPrimary));
             }
         });
