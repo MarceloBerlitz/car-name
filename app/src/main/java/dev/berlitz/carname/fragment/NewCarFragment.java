@@ -37,7 +37,7 @@ import dev.berlitz.carname.AsyncTaskHandler;
 import dev.berlitz.carname.R;
 import dev.berlitz.carname.converters.PathConverter;
 import dev.berlitz.carname.database.AppDatabase;
-import dev.berlitz.carname.integration.response.CarMakeAndModel;
+import dev.berlitz.carname.integration.CarMakeAndModel;
 import dev.berlitz.carname.integration.response.CarResponse;
 import dev.berlitz.carname.mapper.CarMapper;
 import dev.berlitz.carname.model.CarModel;

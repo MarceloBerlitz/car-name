@@ -1,8 +1,6 @@
-package dev.berlitz.carname.integration.response;
+package dev.berlitz.carname.integration;
 
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.algorithmia.Algorithmia;
 import com.algorithmia.AlgorithmiaClient;
@@ -13,6 +11,7 @@ import com.google.gson.Gson;
 import java.util.Objects;
 
 import dev.berlitz.carname.AsyncTaskHandler;
+import dev.berlitz.carname.integration.response.CarResponse;
 
 public class CarMakeAndModel extends AsyncTask<String, Void, CarResponse[]> {
 
